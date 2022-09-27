@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr format="boolean" name="showWhenLocked"/>
+    <color name="white">#000000</color>
+    <string name="default_app_name">Caller ID</string>
+    <string name="default_caller_appointment"/>
+    <string name="default_caller_city"/>
+    <string name="default_caller_name">Unknown caller</string>
+</resources>

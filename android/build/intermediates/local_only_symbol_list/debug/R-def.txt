@@ -1,0 +1,20 @@
+R_DEF: Internal format may change without notice
+local
+attr showWhenLocked
+color white
+drawable blue_rounded
+drawable ic_close_white
+id WidgetLabel
+id appwidget_text
+id itemContainer
+id lvList
+id tvItemText
+id tvUpdate
+layout item
+layout teleopti_widget
+string default_app_name
+string default_caller_appointment
+string default_caller_city
+string default_caller_name
+xml teleopti_widget_info
+xml widget_metadata

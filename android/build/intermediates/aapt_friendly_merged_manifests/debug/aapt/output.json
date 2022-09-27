@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "applicationId": "ru.nasvyazi.widget",
+  "variantType": "LIBRARY",
+  "elements": [
+    {
+      "outputType": {
+        "type": "AAPT_FRIENDLY_MERGED_MANIFESTS"
+      },
+      "apkData": {
+        "type": "MAIN",
+        "splits": [],
+        "versionCode": 1,
+        "versionName": "1.0",
+        "outputFile": "react-native-widget-teleopti-debug.aar",
+        "fullName": "debug",
+        "baseName": "debug",
+        "dirName": ""
+      },
+      "path": "AndroidManifest.xml",
+      "properties": {
+        "packageId": "ru.nasvyazi.widget",
+        "split": ""
+      }
+    }
+  ]
+}

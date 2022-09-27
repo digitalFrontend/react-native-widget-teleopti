@@ -1,0 +1,169 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.App4T2.AppWidget.Container"
+    android:theme="@style/AppTheme.AppWidgetContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_rect"
+        android:elevation="3dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="12dp">
+
+        <LinearLayout
+            android:id="@+id/WidgetLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/appwidget_text"
+                style="@style/Widget.App4T2.AppWidget.InnerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shadow_rect"
+                android:fontFamily="@font/header_bold_font"
+                android:gravity="start"
+                android:text="@string/appwidget_text"
+                android:textColor="#1f2229"
+                android:textSize="17sp" />
+
+            <TextView
+                style="@style/Widget.App4T2.AppWidget.InnerView"
+                android:id="@+id/tvUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shadow_rect"
+                android:fontFamily="@font/header_bold_font"
+                android:gravity="start"
+                android:textColor="#1f2229"
+                android:textSize="17sp" />
+<!--                android:text="Hello Widget"-->
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/shadow_rect"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="12dp" >
+
+            <ListView
+                android:id="@+id/lvList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!--                android:layout_below="@id/tvUpdate">-->
+            </ListView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--style="@style/Widget.App4T2.AppWidget.Container"-->
+<!--android:theme="@style/AppTheme.AppWidgetContainer"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent">-->
+
+
+<!--<LinearLayout-->
+<!--    android:id="@+id/WidgetLabel"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:layout_marginStart="16dp"-->
+<!--    android:layout_marginTop="5dp"-->
+<!--    android:layout_marginEnd="16dp"-->
+<!--    android:layout_marginBottom="5dp"-->
+<!--    android:background="@drawable/shadow_rect"-->
+<!--    android:clickable="true"-->
+<!--    android:elevation="3dp"-->
+<!--    android:gravity="center"-->
+<!--    android:orientation="vertical"-->
+<!--    android:paddingHorizontal="14dp"-->
+<!--    android:paddingVertical="12dp">-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="4dp"-->
+<!--                android:orientation="horizontal">-->
+
+
+<!--                <TextView-->
+<!--                    style="@style/Widget.App4T2.AppWidget.InnerView"-->
+<!--                    android:id="@+id/appwidget_text"-->
+<!--                    android:text="@string/appwidget_text"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="@font/header_bold_font"-->
+<!--                    android:gravity="left"-->
+<!--                    android:textColor="#1f2229"-->
+<!--                    android:textSize="17dp"-->
+<!--                    />-->
+
+
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingBottom="4dp">-->
+
+<!--                <ScrollView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="200dp">-->
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical" >-->
+
+<!--                        &lt;!&ndash;                                <androidx.recyclerview.widget.RecyclerView&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    android:layout_width="match_parent"&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    android:layout_height="150dp"&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    tools:spanCount="5" />&ndash;&gt;-->
+<!--                    </LinearLayout>-->
+<!--                </ScrollView>-->
+
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+
+<!--                <HorizontalScrollView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1">-->
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:orientation="vertical" >-->
+
+<!--                    </LinearLayout>-->
+<!--                </HorizontalScrollView>-->
+
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+<!--</LinearLayout>-->
+<!--</RelativeLayout>-->
