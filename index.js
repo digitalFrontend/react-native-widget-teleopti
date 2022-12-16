@@ -7,11 +7,11 @@ const { WidgetShareData: Widget } = NativeModules;
 let params = null;
 
 let WidgetData = {
-  setDataList: async (dataList) => {},
+  setDataList: async (dataList, updateDate, hasTeleopti) => {},
   setParams: (params) => {},
 };
 
-const formatData = (dataList) => {
+const formatData = (dataList, updateDate, hasTeleopti) => {
   try {
     let _dataList = [];
     if (Platform.OS == "android") {
@@ -26,7 +26,7 @@ const formatData = (dataList) => {
       });
     }
     if (Platform.OS == "android") {
-      return JSON.stringify({ json: _dataList });
+      return JSON.stringify({ json: _dataList,  updateDate, hasTeleopti});
     } else {
       return _dataList;
     }
@@ -38,7 +38,7 @@ const formatData = (dataList) => {
 let isActive = false;
 let storage = [];
 
-WidgetData.setDataList = async (dataList) => {
+WidgetData.setDataList = async (dataList, updateDate, hasTeleopti) => {
   if (params == null) {
     throw "You should set params before use it via setParams(params)";
   }
@@ -54,7 +54,12 @@ WidgetData.setDataList = async (dataList) => {
 
     isActive = true;
 
-    let _dataList = formatData(dataList);
+    let _dataList
+      if(Platform.OS == "android"){
+        _dataList = formatData(dataList, updateDate, hasTeleopti)
+      }else{
+        _dataList = formatData(dataList);
+      }
     let result = null;
 
     if (Platform.OS == "android") {
@@ -63,6 +68,8 @@ WidgetData.setDataList = async (dataList) => {
       try {
         result = await Widget.setDataList(
           _dataList,
+          updateDate,
+          hasTeleopti,
           params.ios.EXTENSION_ID,
           params.ios.DATA_GROUP,
           params.ios.DATA_KEY

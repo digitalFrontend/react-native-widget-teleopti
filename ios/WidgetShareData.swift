@@ -27,7 +27,7 @@ class WidgetShareData: NSObject {
 
             return data
         } else {
-            let data = WidgetTransferData(data: [])
+            let data = WidgetTransferData(data: [], updateDate: "", hasTeleopti: false)
             
             return data;
         }
@@ -36,6 +36,8 @@ class WidgetShareData: NSObject {
     @objc
     func setDataList(
         _ dataList: Array<Any>,
+        withUpdateDate updateDate: String,
+        withHasTeleopti hasTeleopti: Bool,
         withExtensionId EXTENSION_ID: String,
         withDataGroup DATA_GROUP: String,
         withDataKey DATA_KEY: String,
@@ -45,7 +47,7 @@ class WidgetShareData: NSObject {
         
         do {
            
-            let transferData = WidgetTransferData(data: dataList as! [String])
+            let transferData = WidgetTransferData(data: dataList as! [String], updateDate: updateDate, hasTeleopti: hasTeleopti)
             saveData(transferData: transferData)
             if #available(iOS 14.0, *) {
                 WidgetCenter.shared.reloadTimelines(ofKind: "WidgetTeleopti")

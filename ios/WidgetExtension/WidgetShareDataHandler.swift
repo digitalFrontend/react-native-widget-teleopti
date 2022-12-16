@@ -26,6 +26,8 @@ struct WidgetInfo : Identifiable, Decodable, Encodable {
 
 struct WidgetTransferData: Decodable, Encodable {
     let data: [String]
+    let updateDate: String
+    let hasTeleopti: Bool
 }
 
 //                                            Example to create widget extension:

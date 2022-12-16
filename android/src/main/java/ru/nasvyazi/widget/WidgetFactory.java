@@ -1,39 +1,131 @@
 package ru.nasvyazi.widget;
 
+import static android.provider.Settings.System.DATE_FORMAT;
+
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
+
+class DayOffInfo {
+    public String title;
+    public String subtitle;
+        }
+class WidgetDayInfo {
+    public String dayDuration;
+    public String dayDate;
+    public List<DataObject> shedule;
+    public DayOffInfo personDayOff;
+    public boolean twoDaysWorkDay;
+    public List<DataObject> secondDayShedule;
+    public int conflictEventIndex;
+    public String id ;
+        }
 class DataObject {
-    public String contractTime;
+    public String eventDuration;
     public String description;
-    public int alpha;
-    public int blue;
-    public int green;
-    public int red;
+    public String eventTimeStart;
+    public String eventTimeEnd;
+    public String hexDivider;
+    public String hexContainer;
+
+    public  DataObject(String description){
+        this.description = description;
+    };
+
 }
 
 class Data {
-    public List<DataObject> json;
+    public List<WidgetDayInfo> json;
+    public String updateDate;
+    public Boolean hasTeleopti;
+}
+class Helper {
+   public static boolean compareTime(String time1, String time2) {
+
+        String pattern = "HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+
+        try {
+            Date date1 = sdf.parse(time1);
+            Date date2 = sdf.parse(time2);
+
+            if(date1.before(date2)) {
+                return true;
+            } else {
+
+                return false;
+            }
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static WidgetDayInfo getCurrentDay(List<WidgetDayInfo> days) {
+        Date currentDate = new Date();
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        String srtCurrDate = dateFormatter.format(currentDate);
+        for (int i=0; i<days.size(); i++) {
+            if (days.get(i).dayDate.equals(srtCurrDate)){ //srtCurrDate//"2022-12-07
+             return days.get(i);
+            }
+        }
+        return null;
+    }
+
+    public static List<DataObject> getCurrentShedule(List<DataObject> shedule, boolean twoDaysWorkDay, int conflictEventIndex) {
+        DateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+        Date currentDate = new Date();
+        String strCurrTime = timeFormatter.format(currentDate);
+        List<DataObject> currenShedule = new ArrayList<>();
+        if(twoDaysWorkDay){
+            for (int i=0; i<conflictEventIndex; i++) {
+                Boolean isBefore = Helper.compareTime(shedule.get(i).eventTimeEnd, strCurrTime); // "12-00"
+                if (!isBefore){
+                    currenShedule.add(shedule.get(i));
+                }
+            }
+            for (int i=conflictEventIndex; i<shedule.size(); i++) {
+                    currenShedule.add(shedule.get(i));
+            }
+        } else{
+            for (int i=0; i<shedule.size(); i++) {
+                Boolean isBefore = Helper.compareTime(shedule.get(i).eventTimeEnd, strCurrTime); // "12-00"
+                if (!isBefore){
+                    currenShedule.add(shedule.get(i));
+                }
+            }
+        }
+        return currenShedule;
+    }
+
 }
 
 public class WidgetFactory implements RemoteViewsFactory {
     ArrayList<Integer> colorList = new ArrayList<Integer>();
     List<DataObject> allData;
-    ArrayList<String> data;
+    List<DataObject> data;
     Context context;
     SimpleDateFormat sdf;
+    String updateDate;
+    Boolean hasTeleopti;
     int widgetID;
 
     WidgetFactory(Context ctx, Intent intent) {
@@ -45,7 +137,7 @@ public class WidgetFactory implements RemoteViewsFactory {
 
     @Override
     public void onCreate() {
-        data = new ArrayList<String>();
+        data = new ArrayList<DataObject>();
     }
 
     @Override
@@ -65,10 +157,31 @@ public class WidgetFactory implements RemoteViewsFactory {
 
     @Override
     public RemoteViews getViewAt(int position) {
-        RemoteViews rView = new RemoteViews(context.getPackageName(),
-                R.layout.item);
-    rView.setInt(R.id.itemContainer, "setBackgroundColor", colorList.get(position)); 
-        rView.setTextViewText(R.id.tvItemText, data.get(position));
+        RemoteViews rView = new RemoteViews(context.getPackageName(), R.layout.item);
+        Boolean noMoreView = false;
+        if(data.get(position).eventTimeEnd == null && data.get(position).eventTimeStart == null && data.get(position).eventDuration == null && data.get(position).description != null) {
+            noMoreView = true;
+        }
+        if(noMoreView){
+            rView.setViewVisibility(R.id.noMoreActivity, View.VISIBLE);
+            rView.setTextViewText(R.id.noMoreActivity, data.get(position).description);
+            rView.setViewVisibility(R.id.sheduleElementContainer, View.INVISIBLE);
+            rView.setViewVisibility(R.id.sheduleElementContent, View.INVISIBLE);
+        } else {
+            rView.setViewVisibility(R.id.sheduleElementContainer, View.VISIBLE);
+            rView.setViewVisibility(R.id.sheduleElementContent, View.VISIBLE);
+            rView.setViewVisibility(R.id.noMoreActivity, View.INVISIBLE);
+            rView.setImageViewResource(R.id.sheduleElementContainer, R.drawable.rounded);
+            rView.setInt(R.id.sheduleElementContainer, "setColorFilter",  Color.parseColor(  data.get(position).hexContainer));
+
+            rView.setImageViewResource(R.id.sheduleElementDivider, R.drawable.rounded_inside_divider);
+            rView.setInt(R.id.sheduleElementDivider, "setColorFilter", Color.parseColor(  data.get(position).hexDivider));
+
+            rView.setTextViewText(R.id.description, data.get(position).description+", "+data.get(position).eventDuration);
+            rView.setTextColor(R.id.description, Color.parseColor(  data.get(position).hexDivider));
+            rView.setTextViewText(R.id.duration, data.get(position).eventTimeStart+"–"+data.get(position).eventTimeEnd);
+            rView.setTextColor(R.id.duration, Color.parseColor(  data.get(position).hexDivider));
+        }
 
         return rView;
     }
@@ -93,23 +206,25 @@ public class WidgetFactory implements RemoteViewsFactory {
 
         Gson g = new Gson();
         Data newData = g.fromJson(json, Data.class);
-        List<DataObject> dataItemsArr = newData.json;
+        updateDate = newData.updateDate;
+        hasTeleopti = newData.hasTeleopti;
 
-        allData = newData.json;
+        List<WidgetDayInfo> days = newData.json;
 
-        List<String> newArrayDataDescription = new ArrayList<String>();
-        List<String> newArrayDataContractTime = new ArrayList<String>();
-        for(int i=0; i<dataItemsArr.size(); i++){
-            String description = dataItemsArr.get(i).description;
-            String contractTime = dataItemsArr.get(i).contractTime;
-            int intColor = Color.argb(dataItemsArr.get(i).alpha, dataItemsArr.get(i).red, dataItemsArr.get(i).green, dataItemsArr.get(i).blue);
-            newArrayDataDescription.add(i,description );
-            newArrayDataContractTime.add(i,contractTime);
-            colorList.add(intColor);
-        }
+        WidgetDayInfo currentDay = Helper.getCurrentDay(days);
+        if(currentDay != null){
+            List<DataObject> currentShedule = new ArrayList<>();
+            if(currentDay.secondDayShedule != null){
+                currentShedule = Helper.getCurrentShedule(currentDay.secondDayShedule, currentDay.twoDaysWorkDay, currentDay.conflictEventIndex);
+            } else{
+                currentShedule = Helper.getCurrentShedule(currentDay.shedule, currentDay.twoDaysWorkDay, currentDay.conflictEventIndex);
+            }
 
-        for (int i = 0; i<newArrayDataDescription.size(); i++) {
-            data.add(newArrayDataContractTime.get(i) + " - " + newArrayDataDescription.get(i));
+            data = currentShedule;
+            if(data.size() < 4){
+                DataObject noMoreActivity = new DataObject("Сегодня событий больше нет");
+                data.add(noMoreActivity);
+            }
         }
     }
 

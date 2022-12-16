@@ -1,18 +1,23 @@
 ru/nasvyazi/widget/ReactBridgeTools.java
  ru.nasvyazi.widget.ReactBridgeTools
  ru.nasvyazi.widget.ReactBridgeTools$1
-ru/nasvyazi/widget/WidgetFactory.java
- ru.nasvyazi.widget.Data
- ru.nasvyazi.widget.DataObject
- ru.nasvyazi.widget.WidgetFactory
-ru/nasvyazi/widget/WidgetShareDataModule.java
- ru.nasvyazi.widget.WidgetShareDataModule
- ru.nasvyazi.widget.WidgetShareDataModule$DataObject
 ru/nasvyazi/widget/WidgetShareDataPackage.java
  ru.nasvyazi.widget.WidgetShareDataPackage
 ru/nasvyazi/widget/BuildConfig.java
  ru.nasvyazi.widget.BuildConfig
+ru/nasvyazi/widget/WidgetFactory.java
+ ru.nasvyazi.widget.Data
+ ru.nasvyazi.widget.DataObject
+ ru.nasvyazi.widget.DayOffInfo
+ ru.nasvyazi.widget.Helper
+ ru.nasvyazi.widget.WidgetDayInfo
+ ru.nasvyazi.widget.WidgetFactory
+ru/nasvyazi/widget/AppWidgetAlarm.java
+ ru.nasvyazi.widget.AppWidgetAlarm
 ru/nasvyazi/widget/WidgetService.java
  ru.nasvyazi.widget.WidgetService
+ru/nasvyazi/widget/WidgetShareDataModule.java
+ ru.nasvyazi.widget.WidgetShareDataModule
+ ru.nasvyazi.widget.WidgetShareDataModule$DataObject
 ru/nasvyazi/widget/TeleoptiWidget.java
  ru.nasvyazi.widget.TeleoptiWidget

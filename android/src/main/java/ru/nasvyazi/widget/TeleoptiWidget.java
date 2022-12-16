@@ -1,31 +1,65 @@
 package ru.nasvyazi.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
-import java.sql.Date;
+import com.google.gson.Gson;
+
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 
 public class TeleoptiWidget extends AppWidgetProvider {
-
+    private final int ALARM_ID = 12312;
+    public static String ACTION_AUTO_UPDATE_WIDGET = "ACTION_AUTO_UPDATE_WIDGET";
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
     public TeleoptiWidget() {
     }
 
+    @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+        Log.d("HELL------------> onEnabled", "!!!!!!!");
+    }
+
+    @Override
+    public void onDisabled(Context context) {
+        super.onDisabled(context);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName thisAppWidgetComponentName = new ComponentName(context.getPackageName(), getClass().getName());
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidgetComponentName);
+        if (appWidgetIds.length == 0) {
+            // stop alarm
+            AppWidgetAlarm appWidgetAlarm = new AppWidgetAlarm(context.getApplicationContext());
+            appWidgetAlarm.stopAlarm(ALARM_ID);
+        }
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        int[] ids = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
-        AppWidgetManager.getInstance(context)
-                .notifyAppWidgetViewDataChanged(ids, R.id.lvList);
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName thisAppWidgetComponentName = new ComponentName(context.getPackageName(), getClass().getName());
+
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidgetComponentName);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widgetRootView);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lvList);
+
+        onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds);
+//        
 
     }
 
@@ -33,34 +67,93 @@ public class TeleoptiWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+        // start alarm
+        AppWidgetAlarm appWidgetAlarm = new AppWidgetAlarm(context.getApplicationContext());
+        appWidgetAlarm.startAlarm(ALARM_ID);
+        // update widgets
         for (int i : appWidgetIds) {
             updateWidget(context, appWidgetManager, i);
+
         }
+
+;
     }
 
     void updateWidget(Context context, AppWidgetManager appWidgetManager,
                       int appWidgetId) {
-        RemoteViews rv = new RemoteViews(context.getPackageName(),
-                R.layout.teleopti_widget);
-        setUpdateTV(rv, context, appWidgetId);
+        SharedPreferences sharedPref = context.getSharedPreferences("TELEOPTI_storage", Context.MODE_PRIVATE);
+        String json = sharedPref.getString("teleoptiData", null);
+        RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.teleopti_widget);
+        java.util.Date todayDate = new Date();
+        DateFormat todayDateFormatter = new SimpleDateFormat("EEEE, d MMM");
+        String srtTodayDate = todayDateFormatter.format(todayDate);
+        rv.setTextViewText(R.id.todayDate, srtTodayDate);
+        if(json == null){
+            rv.setViewVisibility(R.id.updateDate, View.INVISIBLE);
+            rv.setViewVisibility(R.id.listContent, View.INVISIBLE);
+            rv.setViewVisibility(R.id.dayoff, View.INVISIBLE );
+            rv.setViewVisibility(R.id.noShedule, View.INVISIBLE);
+            rv.setViewVisibility(R.id.noData, View.VISIBLE);
+        } else{
+            Gson g = new Gson();
+            Data newData = g.fromJson(json, Data.class);
+            String updateDate = newData.updateDate;
+            Boolean hasTeleopti = newData.hasTeleopti;
+            if(!hasTeleopti){
+                rv.setViewVisibility(R.id.updateDate, View.INVISIBLE);
+                rv.setViewVisibility(R.id.listContent, View.INVISIBLE);
+                rv.setViewVisibility(R.id.dayoff, View.INVISIBLE );
+                rv.setViewVisibility(R.id.noShedule, View.INVISIBLE);
+                rv.setViewVisibility(R.id.noData, View.VISIBLE);
+            } else{
+                rv.setViewVisibility(R.id.updateDate, View.VISIBLE);
+                WidgetDayInfo currentDay = Helper.getCurrentDay(newData.json);
+                if(currentDay!=null){
+                    rv.setTextViewText(R.id.updateDate, "Данные на "+updateDate);
+                    rv.setTextColor(R.id.updateDate, Color.parseColor("#73767A"));
+                    DayOffInfo dayOffInfo = currentDay.personDayOff;
 
-        setList(rv, context, appWidgetId);
-        setListClick(rv, context, appWidgetId);
-
+                    if(dayOffInfo != null){
+                        if(currentDay.secondDayShedule != null){
+                            List<DataObject> currentShedule = Helper.getCurrentShedule(currentDay.secondDayShedule, currentDay.twoDaysWorkDay, currentDay.conflictEventIndex);
+                            if(currentShedule.size() > 0){
+                                rv.setViewVisibility(R.id.dayoff, View.INVISIBLE );
+                                rv.setViewVisibility(R.id.noShedule, View.INVISIBLE);
+                                rv.setViewVisibility(R.id.listContent, View.VISIBLE);
+                                setList(rv, context, appWidgetId);
+                            }else {
+                                rv.setViewVisibility(R.id.dayoff, View.VISIBLE);
+                                rv.setViewVisibility(R.id.listContent, View.INVISIBLE);
+                                rv.setViewVisibility(R.id.noShedule, View.INVISIBLE);
+                                rv.setTextViewText(R.id.dayoffTitle, "Сегодня – "+dayOffInfo.title);
+                                rv.setTextViewText(R.id.dayoffSubtitle, dayOffInfo.subtitle);
+                            }
+                        }else {
+                            rv.setViewVisibility(R.id.dayoff, View.VISIBLE);
+                            rv.setViewVisibility(R.id.listContent, View.INVISIBLE);
+                            rv.setViewVisibility(R.id.noShedule, View.INVISIBLE);
+                            rv.setTextViewText(R.id.dayoffTitle, "Сегодня – "+dayOffInfo.title);
+                            rv.setTextViewText(R.id.dayoffSubtitle, dayOffInfo.subtitle);
+                        }
+                    } else {
+                        rv.setViewVisibility(R.id.dayoff, View.INVISIBLE );
+                        rv.setViewVisibility(R.id.noShedule, View.INVISIBLE);
+                        rv.setViewVisibility(R.id.listContent, View.VISIBLE);
+                        setList(rv, context, appWidgetId);
+                    }
+                } else {
+                    rv.setTextViewText(R.id.updateDate, "Расписание не загрузилось");
+                    rv.setTextColor(R.id.updateDate, Color.parseColor("#FF455C"));
+                    rv.setViewVisibility(R.id.dayoff, View.INVISIBLE );
+                    rv.setViewVisibility(R.id.listContent, View.INVISIBLE);
+                    rv.setViewVisibility(R.id.noShedule, View.VISIBLE);
+                }
+            }
+        }
         appWidgetManager.updateAppWidget(appWidgetId, rv);
     }
 
-    void setUpdateTV(RemoteViews rv, Context context, int appWidgetId) {
-        rv.setTextViewText(R.id.tvUpdate,
-                this.sdf.format(new Date(System.currentTimeMillis())));
-        Intent updIntent = new Intent(context, TeleoptiWidget.class);
-        updIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        updIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,
-                new int[] { appWidgetId });
-        PendingIntent updPIntent = PendingIntent.getBroadcast(context,
-                appWidgetId, updIntent, 0);
-        rv.setOnClickPendingIntent(R.id.tvUpdate, updPIntent);
-    }
+//   
 
     void setList(RemoteViews rv, Context context, int appWidgetId) {
         Intent adapter = new Intent(context, WidgetService.class);
