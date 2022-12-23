@@ -9,6 +9,8 @@ let params = null;
 let WidgetData = {
   setDataList: async (dataList, updateDate, hasTeleopti) => {},
   setParams: (params) => {},
+  getMetricsIos: ()=>{},
+  getMetricsAndroid: ()=>{}
 };
 
 const formatData = (dataList, updateDate, hasTeleopti) => {
@@ -101,6 +103,22 @@ WidgetData.setDataList = async (dataList, updateDate, hasTeleopti) => {
   }
 };
 
+WidgetData.getMetricsIos = async () => {
+  try {
+    let ios = await Widget.loadMetrics();
+      return ios
+  } catch (error) {
+      throw error;
+  }
+};
+WidgetData.getMetricsAndroid = async () => {
+  try {
+    let android = await Widget.loadMetrics();
+      return android
+  } catch (error) {
+      throw error;
+  }
+};
 //iOS only
 WidgetData.setParams = async (_params) => {
   params = _params;

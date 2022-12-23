@@ -83,4 +83,9 @@ public class WidgetShareDataModule extends ReactContextBaseJavaModule {
     intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
     reactContext.sendBroadcast(intent);
   }
+  @ReactMethod
+  public void loadMetrics( final Promise promise) {
+    String stateForMetrics = Helper.getStateForMetrics(reactContext);
+    promise.resolve(stateForMetrics);
+  }
 }

@@ -11,4 +11,9 @@ RCT_EXTERN_METHOD(setDataList: (NSArray*) dataList
                   withResolver:(RCTPromiseResolveBlock)resolve
                   withRejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(loadMetrics:
+                  (RCTPromiseResolveBlock)resolve
+                  withRejecter:(RCTPromiseRejectBlock)reject
+)
+
 @end

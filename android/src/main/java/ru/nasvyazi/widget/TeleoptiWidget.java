@@ -31,12 +31,15 @@ public class TeleoptiWidget extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        Log.d("HELL------------> onEnabled", "!!!!!!!");
+        Helper.setStateForMetrics(context, new StateForMetrics(true, false));
     }
 
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
+        
+        Helper.setStateForMetrics(context, new StateForMetrics(false, true));
+
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName thisAppWidgetComponentName = new ComponentName(context.getPackageName(), getClass().getName());
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidgetComponentName);
@@ -58,8 +61,7 @@ public class TeleoptiWidget extends AppWidgetProvider {
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widgetRootView);
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lvList);
 
-        onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds);
-//        
+        onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds);      
 
     }
 

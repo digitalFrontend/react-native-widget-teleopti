@@ -1,6 +1,8 @@
 package ru.nasvyazi.widget;
 
-import static android.provider.Settings.System.DATE_FORMAT;
+import static android.content.Context.MODE_PRIVATE;
+
+import static com.facebook.react.bridge.ReadableType.Map;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -14,12 +16,14 @@ import android.widget.RemoteViewsService.RemoteViewsFactory;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -50,13 +54,46 @@ class DataObject {
     };
 
 }
+class StateForMetrics {
+    public boolean create;
+    public boolean destroy;
 
+    public  StateForMetrics(boolean create, boolean destroy){
+        this.create = create;
+        this.destroy = destroy;
+    };
+}
 class Data {
     public List<WidgetDayInfo> json;
     public String updateDate;
-    public Boolean hasTeleopti;
+    public boolean hasTeleopti;
 }
 class Helper {
+
+    public static void setStateForMetrics(Context context, StateForMetrics stateForMetrics) {
+        SharedPreferences sharedPreferences =  context.getSharedPreferences("TELEOPTI_storage", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        editor.putString("stateForMetrics", gson.toJson(stateForMetrics));
+        editor.commit();
+    }
+
+    public static String getStateForMetrics(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("TELEOPTI_storage", Context.MODE_PRIVATE);
+        String json = sharedPref.getString("stateForMetrics", null);
+
+        if(json == null){
+            StateForMetrics defaultState =  new StateForMetrics(false, false);
+            Gson gson = new Gson();
+            String jsonState = gson.toJson(defaultState);
+            return jsonState;
+        }else {
+            return json;
+        }
+
+
+    }
+    
    public static boolean compareTime(String time1, String time2) {
 
         String pattern = "HH:mm";
