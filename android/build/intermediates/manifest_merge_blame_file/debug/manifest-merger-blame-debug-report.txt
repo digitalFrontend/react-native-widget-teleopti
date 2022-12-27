@@ -11,7 +11,7 @@
 9-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml
 10    <!-- <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"></uses-permission> -->
 11    <application>
-11-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:5:3-21:17
+11-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:5:3-26:17
 12        <service
 12-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:6:5-9:15
 13            android:name="ru.nasvyazi.widget.WidgetService"
@@ -21,7 +21,7 @@
 15        </service>
 16
 17        <receiver
-17-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:10:5-20:16
+17-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:10:5-25:16
 18            android:name="ru.nasvyazi.widget.TeleoptiWidget"
 18-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:11:7-37
 19            android:exported="true" >
@@ -32,14 +32,26 @@
 21-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:14:9-76
 21-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:14:17-73
 22            </intent-filter>
-23
-24            <meta-data
-24-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:17:7-19:56
-25                android:name="android.appwidget.provider"
-25-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:18:9-50
-26                android:resource="@xml/teleopti_widget_info" />
-26-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:19:9-53
-27        </receiver>
-28    </application>
+23            <intent-filter>
+23-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:16:7-18:23
+24                <action android:name="android.intent.action.BOOT_COMPLETED" />
+24-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:17:9-71
+24-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:17:17-68
+25            </intent-filter>
+26            <intent-filter>
+26-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:19:7-21:23
+27                <action android:name="ACTION_AUTO_UPDATE_WIDGET" />
+27-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:20:9-60
+27-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:20:17-57
+28            </intent-filter>
 29
-30</manifest>
+30            <meta-data
+30-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:22:7-24:56
+31                android:name="android.appwidget.provider"
+31-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:23:9-50
+32                android:resource="@xml/teleopti_widget_info" />
+32-->/Users/admin/Desktop/project/App4T2_Mobile/node_modules/react-native-widget-teleopti/android/src/main/AndroidManifest.xml:24:9-53
+33        </receiver>
+34    </application>
+35
+36</manifest>

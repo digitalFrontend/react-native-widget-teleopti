@@ -12,6 +12,7 @@ import Foundation
 
 
 let DATA_KEY = "widgetTeleoptiKey";
+let METRIC_KEY = "widgetTeleoptiMetricKey";
 let DATA_GROUP = "group.ru.nasvyazi";
 
 struct WidgetInfo : Identifiable, Decodable, Encodable {
@@ -26,6 +27,18 @@ struct WidgetInfo : Identifiable, Decodable, Encodable {
 
 struct WidgetTransferData: Decodable, Encodable {
     let data: [String]
+    let updateDate: String
+    let hasTeleopti: Bool
+}
+struct WidgetMetrics: Decodable, Encodable {
+  var small: Bool?
+  var medium: Bool?
+  var large: Bool?
+}
+struct WidgetInfoEncodable: Decodable, Encodable {
+    let configuration: String?
+    let family: String?
+    let kind: String?
 }
 
 //                                            Example to create widget extension:
