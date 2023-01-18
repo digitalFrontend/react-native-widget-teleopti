@@ -112,6 +112,7 @@ public class TeleoptiWidget extends AppWidgetProvider {
                 WidgetDayInfo currentDay = Helper.getCurrentDay(newData.json);
                 if(currentDay!=null){
                     rv.setTextViewText(R.id.updateDate, "Данные на "+updateDate);
+                    rv.setTextViewText(R.id.todayDuration, " "+currentDay.dayDuration);
                     rv.setTextColor(R.id.updateDate, Color.parseColor("#73767A"));
                     DayOffInfo dayOffInfo = currentDay.personDayOff;
 

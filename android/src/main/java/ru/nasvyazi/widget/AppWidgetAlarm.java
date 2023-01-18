@@ -41,7 +41,7 @@ public class AppWidgetAlarm
 
         Intent alarmIntent=new Intent(mContext, TeleoptiWidget.class);
         alarmIntent.setAction(TeleoptiWidget.ACTION_AUTO_UPDATE_WIDGET);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, ALARM_ID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, ALARM_ID, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
 
         AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         // RTC does not wake the device up
@@ -52,7 +52,7 @@ public class AppWidgetAlarm
     public void stopAlarm(int ALARM_ID)
     {
         Intent alarmIntent = new Intent(TeleoptiWidget.ACTION_AUTO_UPDATE_WIDGET);
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, ALARM_ID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, ALARM_ID, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
 
         AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
