@@ -1,7 +1,9 @@
 package ru.nasvyazi.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -72,8 +74,10 @@ public class TeleoptiWidget extends AppWidgetProvider {
         // start alarm
         AppWidgetAlarm appWidgetAlarm = new AppWidgetAlarm(context.getApplicationContext());
         appWidgetAlarm.startAlarm(ALARM_ID);
+
         // update widgets
         for (int i : appWidgetIds) {
+
             updateWidget(context, appWidgetManager, i);
 
         }
@@ -86,6 +90,20 @@ public class TeleoptiWidget extends AppWidgetProvider {
         SharedPreferences sharedPref = context.getSharedPreferences("TELEOPTI_storage", Context.MODE_PRIVATE);
         String json = sharedPref.getString("teleoptiData", null);
         RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.teleopti_widget);
+          // open app onClick
+        try {
+            Intent intent =  context.getPackageManager().getLaunchIntentForPackage("ru.tele2.nasvyzi"); 
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+            rv.setOnClickPendingIntent(R.id.widgetRootView, pendingIntent);
+            appWidgetManager.updateAppWidget(appWidgetId, rv);
+        } catch (ActivityNotFoundException e) {
+            // Toast.makeText(context.getApplicationContext(),
+            //         "There was a problem loading the application: ",
+            //         Toast.LENGTH_SHORT).show();
+        }
+      
         java.util.Date todayDate = new Date();
         DateFormat todayDateFormatter = new SimpleDateFormat("EEEE, d MMM");
         String srtTodayDate = todayDateFormatter.format(todayDate);
