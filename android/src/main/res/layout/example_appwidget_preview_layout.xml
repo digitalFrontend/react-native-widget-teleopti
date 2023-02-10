@@ -1,0 +1,366 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shadow_rect_widget"
+    android:gravity="top">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="14dp"
+                android:paddingTop="14dp">
+
+                <TextView
+                    android:gravity="left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shadow_rect_widget"
+                    android:fontFamily="@font/text_bold_widget"
+                    android:textColor="#1f2229"
+                    android:text="ВТОРНИК, 17 ЯНВ."
+                    android:textSize="12sp"
+                    android:textAllCaps="true"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="14dp"
+                android:paddingTop="4dp">
+                <TextView
+                    android:gravity="left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shadow_rect_widget"
+                    android:fontFamily="@font/text_reg_widget"
+                    android:textColor="#73767A"
+                    android:text="Данные на 17.01 12:30"
+                    android:textSize="12sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="14dp"
+                android:paddingTop="6dp"
+                android:orientation="vertical">
+          <!--                1 -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginVertical="2dp"
+                    android:clipChildren="true">
+
+
+
+                    <ImageView
+                        android:background="@drawable/rounded_chat"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elevation="1dp"
+                        >
+                    </ImageView>
+
+                    <LinearLayout
+                        android:elevation="2dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="fill_horizontal"
+                        android:layout_marginVertical="2dp"
+                        android:padding="4dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:background="@drawable/rounded_inside_divider_chat"
+                            android:orientation="vertical"
+                            android:layout_width="4dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="6dp" >
+                        </ImageView>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/text_bold_widget"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="#ff615d00"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:textSize="13sp"
+                                android:text="Чат, 1 час 45 мин"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:paddingRight="6dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/text_reg_widget"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="#ff615d00"
+                                android:textSize="13sp"
+                                android:text="13:15–15:00"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+
+<!--               2  -->
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginVertical="2dp"
+                    android:clipChildren="true">
+
+
+                    <ImageView
+                        android:background="@drawable/rounded_free"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elevation="1dp"
+                        >
+                    </ImageView>
+
+                    <LinearLayout
+                        android:elevation="2dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="fill_horizontal"
+                        android:layout_marginVertical="2dp"
+                        android:padding="4dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:background="@drawable/rounded_inside_divider_free"
+                            android:orientation="vertical"
+                            android:layout_width="4dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="6dp" >
+                        </ImageView>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/text_bold_widget"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="#ff878700"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:textSize="13sp"
+                                android:text="Перерыв, 15 мин"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:paddingRight="6dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/text_reg_widget"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="#ff878700"
+                                android:textSize="13sp"
+                                android:text="15:00–15:15"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+
+<!--                3 -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginVertical="2dp"
+                    android:clipChildren="true">
+
+                    <ImageView
+                        android:background="@drawable/rounded_chat"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elevation="1dp"
+                        >
+                    </ImageView>
+
+                    <LinearLayout
+                        android:elevation="2dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="fill_horizontal"
+                        android:layout_marginVertical="2dp"
+                        android:padding="4dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:background="@drawable/rounded_inside_divider_chat"
+                            android:orientation="vertical"
+                            android:layout_width="4dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="6dp" >
+                        </ImageView>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/text_bold_widget"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="#ff615d00"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:textSize="13sp"
+                                android:text="Чат, 1 час 45 мин"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:paddingRight="6dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/text_reg_widget"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="#ff615d00"
+                                android:textSize="13sp"
+                                android:text="15:15–17:00"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+<!--                4 -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginVertical="2dp"
+                    android:clipChildren="true">
+
+                    <ImageView
+                        android:background="@drawable/rounded_break"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elevation="1dp"
+                        >
+                    </ImageView>
+
+                    <LinearLayout
+                        android:elevation="2dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="fill_horizontal"
+                        android:layout_marginVertical="2dp"
+                        android:padding="4dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:background="@drawable/rounded_inside_divider_break"
+                            android:orientation="vertical"
+                            android:layout_width="4dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="6dp" >
+                        </ImageView>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/text_bold_widget"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="#ff870808"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:textSize="13sp"
+                                android:text="Обед, 45 мин"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:paddingRight="6dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/text_reg_widget"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="#ff870808"
+                                android:textSize="13sp"
+                                android:text="17:00–17:45"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+</RelativeLayout>
+
+

@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="300dp"
-    android:minHeight="200dp"
-    android:updatePeriodMillis="86400000"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:targetCellWidth="4"
+    android:targetCellHeight="4"
+    android:minWidth="250dp"
+    android:minHeight="250dp"
+    android:updatePeriodMillis="1800000"
     android:initialLayout="@layout/teleopti_widget"
-    android:description="@string/app_widget_description"
-    android:resizeMode="horizontal|vertical"
+    android:resizeMode="none"
     android:widgetCategory="home_screen"
     android:initialKeyguardLayout="@layout/teleopti_widget"
+    android:description="@string/app_widget_description"
+    android:previewLayout="@layout/example_appwidget_preview_layout"
+    android:previewImage="@drawable/example_appwidget_preview"
+
 />
+<!--    -->
+    <!--    -->
+    <!--    android:previewImage="@drawable/example_appwidget_preview"-->
+    <!--    android:minWidth="300dp"-->
+    <!--    android:minHeight="200dp"-->
+<!--    86400000-->

@@ -4,5 +4,6 @@
     android:initialLayout="@layout/teleopti_widget"
     android:minHeight="180dp"
     android:minWidth="110dp"
-    android:updatePeriodMillis="1800000">
+    android:updatePeriodMillis="1800000"
+    android:previewImage="@drawable/example_appwidget_preview">
 </appwidget-provider>
