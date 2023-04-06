@@ -1,6 +1,6 @@
 {
   "name": "react-native-widget-teleopti",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Module for sharing data to native widgets and includes android's widget part",
   "main": "index.js",
   "homepage": "https://github.com/digitalFrontend/react-native-widget-teleopti.git",
