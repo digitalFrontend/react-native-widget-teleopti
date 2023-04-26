@@ -140,7 +140,10 @@ class Helper {
                 }
             }
             for (int i=conflictEventIndex; i<shedule.size(); i++) {
+                Boolean isBefore = Helper.compareTime(shedule.get(i).eventTimeEnd, strCurrTime); // "12-00"
+                if (!isBefore){
                     currenShedule.add(shedule.get(i));
+                }
             }
         } else{
             for (int i=0; i<shedule.size(); i++) {
