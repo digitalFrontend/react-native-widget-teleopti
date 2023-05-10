@@ -45,7 +45,9 @@ class DataObject {
     public String eventDuration;
     public String description;
     public String eventTimeStart;
+    public String eventDateStart;
     public String eventTimeEnd;
+    public String eventDateEnd;
     public String hexDivider;
     public String hexContainer;
 
@@ -119,8 +121,10 @@ class Helper {
         Date currentDate = new Date();
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         String srtCurrDate = dateFormatter.format(currentDate);
+        Gson gson = new Gson();
         for (int i=0; i<days.size(); i++) {
             if (days.get(i).dayDate.equals(srtCurrDate)){ //srtCurrDate//"2022-12-07
+                Log.i("SHITTY SHIT", gson.toJson(days.get(i)));
              return days.get(i);
             }
         }
@@ -132,6 +136,8 @@ class Helper {
         Date currentDate = new Date();
         String strCurrTime = timeFormatter.format(currentDate);
         List<DataObject> currenShedule = new ArrayList<>();
+        Gson gson = new Gson();
+        //Log.i("FUCKING SHIT LOG", gson.toJson(shedule));
         if(twoDaysWorkDay){
             for (int i=0; i<conflictEventIndex; i++) {
                 Boolean isBefore = Helper.compareTime(shedule.get(i).eventTimeEnd, strCurrTime); // "12-00"
@@ -140,10 +146,11 @@ class Helper {
                 }
             }
             for (int i=conflictEventIndex; i<shedule.size(); i++) {
+//                Log.i("FUCKING LOG", gson.toJson(shedule.get(i)));
                 Boolean isBefore = Helper.compareTime(shedule.get(i).eventTimeEnd, strCurrTime); // "12-00"
-                if (!isBefore){
-                    currenShedule.add(shedule.get(i));
-                }
+//                Log.i("FUCKING LOG", "time comparer" + shedule.get(i).eventTimeEnd);
+//                Log.i("FUCKING LOG", "time comparer strCurr" + strCurrTime);
+                currenShedule.add(shedule.get(i));
             }
         } else{
             for (int i=0; i<shedule.size(); i++) {
@@ -252,6 +259,7 @@ public class WidgetFactory implements RemoteViewsFactory {
         List<WidgetDayInfo> days = newData.json;
 
         WidgetDayInfo currentDay = Helper.getCurrentDay(days);
+        //Log.i("FUCKING SHIT LOG", g.toJson(currentDay));
         if(currentDay != null){
             List<DataObject> currentShedule = new ArrayList<>();
             if(currentDay.secondDayShedule != null){
