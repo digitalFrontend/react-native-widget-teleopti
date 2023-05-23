@@ -96,7 +96,7 @@ class Helper {
 
     }
     
-   public static boolean compareTime(String time1, String time2) {
+    public static boolean compareTime(String time1, String time2) {
 
         String pattern = "HH:mm";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
@@ -121,10 +121,8 @@ class Helper {
         Date currentDate = new Date();
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         String srtCurrDate = dateFormatter.format(currentDate);
-        Gson gson = new Gson();
         for (int i=0; i<days.size(); i++) {
             if (days.get(i).dayDate.equals(srtCurrDate)){ //srtCurrDate//"2022-12-07
-                Log.i("SHITTY SHIT", gson.toJson(days.get(i)));
              return days.get(i);
             }
         }
@@ -133,24 +131,30 @@ class Helper {
 
     public static List<DataObject> getCurrentShedule(List<DataObject> shedule, boolean twoDaysWorkDay, int conflictEventIndex) {
         DateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+        DateFormat dateFormatter = new SimpleDateFormat("dd.MM");
         Date currentDate = new Date();
         String strCurrTime = timeFormatter.format(currentDate);
+        String strCurrDate = dateFormatter.format(currentDate);
         List<DataObject> currenShedule = new ArrayList<>();
         Gson gson = new Gson();
-        //Log.i("FUCKING SHIT LOG", gson.toJson(shedule));
         if(twoDaysWorkDay){
             for (int i=0; i<conflictEventIndex; i++) {
                 Boolean isBefore = Helper.compareTime(shedule.get(i).eventTimeEnd, strCurrTime); // "12-00"
+
                 if (!isBefore){
                     currenShedule.add(shedule.get(i));
                 }
             }
             for (int i=conflictEventIndex; i<shedule.size(); i++) {
-//                Log.i("FUCKING LOG", gson.toJson(shedule.get(i)));
                 Boolean isBefore = Helper.compareTime(shedule.get(i).eventTimeEnd, strCurrTime); // "12-00"
-//                Log.i("FUCKING LOG", "time comparer" + shedule.get(i).eventTimeEnd);
-//                Log.i("FUCKING LOG", "time comparer strCurr" + strCurrTime);
-                currenShedule.add(shedule.get(i));
+                Boolean isEndSameDate = strCurrDate.equals(shedule.get(i).eventDateEnd);
+
+                if (!isBefore && isEndSameDate) {
+                    currenShedule.add(shedule.get(i));
+                } else if (!isEndSameDate) {
+                    currenShedule.add(shedule.get(i));
+
+                }
             }
         } else{
             for (int i=0; i<shedule.size(); i++) {
@@ -160,6 +164,7 @@ class Helper {
                 }
             }
         }
+
         return currenShedule;
     }
 
@@ -259,7 +264,6 @@ public class WidgetFactory implements RemoteViewsFactory {
         List<WidgetDayInfo> days = newData.json;
 
         WidgetDayInfo currentDay = Helper.getCurrentDay(days);
-        //Log.i("FUCKING SHIT LOG", g.toJson(currentDay));
         if(currentDay != null){
             List<DataObject> currentShedule = new ArrayList<>();
             if(currentDay.secondDayShedule != null){
