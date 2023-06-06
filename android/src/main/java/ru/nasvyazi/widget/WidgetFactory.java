@@ -45,7 +45,9 @@ class DataObject {
     public String eventDuration;
     public String description;
     public String eventTimeStart;
+    public String eventDateStart;
     public String eventTimeEnd;
+    public String eventDateEnd;
     public String hexDivider;
     public String hexContainer;
 
@@ -94,7 +96,7 @@ class Helper {
 
     }
     
-   public static boolean compareTime(String time1, String time2) {
+    public static boolean compareTime(String time1, String time2) {
 
         String pattern = "HH:mm";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
@@ -129,20 +131,29 @@ class Helper {
 
     public static List<DataObject> getCurrentShedule(List<DataObject> shedule, boolean twoDaysWorkDay, int conflictEventIndex) {
         DateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+        DateFormat dateFormatter = new SimpleDateFormat("dd.MM");
         Date currentDate = new Date();
         String strCurrTime = timeFormatter.format(currentDate);
+        String strCurrDate = dateFormatter.format(currentDate);
         List<DataObject> currenShedule = new ArrayList<>();
+        Gson gson = new Gson();
         if(twoDaysWorkDay){
             for (int i=0; i<conflictEventIndex; i++) {
                 Boolean isBefore = Helper.compareTime(shedule.get(i).eventTimeEnd, strCurrTime); // "12-00"
+
                 if (!isBefore){
                     currenShedule.add(shedule.get(i));
                 }
             }
             for (int i=conflictEventIndex; i<shedule.size(); i++) {
                 Boolean isBefore = Helper.compareTime(shedule.get(i).eventTimeEnd, strCurrTime); // "12-00"
-                if (!isBefore){
+                Boolean isEndSameDate = strCurrDate.equals(shedule.get(i).eventDateEnd);
+
+                if (!isBefore && isEndSameDate) {
                     currenShedule.add(shedule.get(i));
+                } else if (!isEndSameDate) {
+                    currenShedule.add(shedule.get(i));
+
                 }
             }
         } else{
@@ -153,6 +164,7 @@ class Helper {
                 }
             }
         }
+
         return currenShedule;
     }
 
