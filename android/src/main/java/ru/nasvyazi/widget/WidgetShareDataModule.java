@@ -41,6 +41,9 @@ import static android.os.Looper.getMainLooper;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import ru.nasvyazi.widget.db.LastUpdateInfo;
+import ru.nasvyazi.widget.db.LastUpdateInfoRepository;
+
 public class WidgetShareDataModule extends ReactContextBaseJavaModule {
 
   private final ReactApplicationContext reactContext;
@@ -59,29 +62,39 @@ public class WidgetShareDataModule extends ReactContextBaseJavaModule {
     return "WidgetShareData";
   }
 
-  class DataObject {
-    public String contractTime;
-    public String description;
-    public double alpha;
-    public double blue;
-    public double green;
-    public double red;
-  }
   @ReactMethod
   public void setDataList(final String dataList, final Promise promise) {
 
-    SharedPreferences sharedPreferences =  getReactApplicationContext().getSharedPreferences(sharedPreferencesName,MODE_PRIVATE);
-    SharedPreferences.Editor editor = sharedPreferences.edit();
-    editor.putString("teleoptiData", dataList);
-    editor.commit();
+    SharedPreferences prefs = getReactApplicationContext().getSharedPreferences(sharedPreferencesName, MODE_PRIVATE);
+    SharedPreferences.Editor editor = prefs.edit();
+    editor.remove("teleoptiData");
+    editor.apply();
 
-    Intent intent = new Intent(reactContext, TeleoptiWidget.class);
-    intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+    Gson g = new Gson();
+    Data newData = g.fromJson(dataList, Data.class);
 
-    int[] ids = AppWidgetManager.getInstance(reactContext)
-            .getAppWidgetIds(new ComponentName(reactContext, TeleoptiWidget.class));
-    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-    reactContext.sendBroadcast(intent);
+    DBTools.updateInfo(getReactApplicationContext(), newData.hasTeleopti, newData.updateDate, new DBToolsCallback() {
+      @Override
+      public void onSuccess() {
+        DBTools.putNewDays(getReactApplicationContext(), newData.json, new DBToolsCallback() {
+          @Override
+          public void onSuccess() {
+
+                Intent intent = new Intent(reactContext, TeleoptiWidget.class);
+                intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
+                int[] ids = AppWidgetManager.getInstance(reactContext)
+                        .getAppWidgetIds(new ComponentName(reactContext, TeleoptiWidget.class));
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                reactContext.sendBroadcast(intent);
+
+            promise.resolve(null);
+          }
+        });
+      }
+    });
+
+
   }
   @ReactMethod
   public void loadMetrics( final Promise promise) {
