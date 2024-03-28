@@ -26,11 +26,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 class DayOffInfo {
     public String title;
     public String subtitle;
-        }
+}
 class WidgetDayInfo {
     public String dayDuration;
     public String dayDate;
@@ -39,15 +38,13 @@ class WidgetDayInfo {
     public boolean twoDaysWorkDay;
     public List<DataObject> secondDayShedule;
     public int conflictEventIndex;
-    public String id ;
-        }
+    public String id;
+}
 class DataObject {
     public String eventDuration;
     public String description;
     public String eventTimeStart;
-    public String eventDateStart;
     public String eventTimeEnd;
-    public String eventDateEnd;
     public String hexDivider;
     public String hexContainer;
 
@@ -96,7 +93,7 @@ class Helper {
 
     }
     
-    public static boolean compareTime(String time1, String time2) {
+   public static boolean compareTime(String time1, String time2) {
 
         String pattern = "HH:mm";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
@@ -131,29 +128,20 @@ class Helper {
 
     public static List<DataObject> getCurrentShedule(List<DataObject> shedule, boolean twoDaysWorkDay, int conflictEventIndex) {
         DateFormat timeFormatter = new SimpleDateFormat("HH:mm");
-        DateFormat dateFormatter = new SimpleDateFormat("dd.MM");
         Date currentDate = new Date();
         String strCurrTime = timeFormatter.format(currentDate);
-        String strCurrDate = dateFormatter.format(currentDate);
         List<DataObject> currenShedule = new ArrayList<>();
-        Gson gson = new Gson();
         if(twoDaysWorkDay){
             for (int i=0; i<conflictEventIndex; i++) {
                 Boolean isBefore = Helper.compareTime(shedule.get(i).eventTimeEnd, strCurrTime); // "12-00"
-
                 if (!isBefore){
                     currenShedule.add(shedule.get(i));
                 }
             }
             for (int i=conflictEventIndex; i<shedule.size(); i++) {
                 Boolean isBefore = Helper.compareTime(shedule.get(i).eventTimeEnd, strCurrTime); // "12-00"
-                Boolean isEndSameDate = strCurrDate.equals(shedule.get(i).eventDateEnd);
-
-                if (!isBefore && isEndSameDate) {
+                if (!isBefore){
                     currenShedule.add(shedule.get(i));
-                } else if (!isEndSameDate) {
-                    currenShedule.add(shedule.get(i));
-
                 }
             }
         } else{
@@ -164,7 +152,6 @@ class Helper {
                 }
             }
         }
-
         return currenShedule;
     }
 
@@ -211,15 +198,23 @@ public class WidgetFactory implements RemoteViewsFactory {
     public RemoteViews getViewAt(int position) {
         RemoteViews rView = new RemoteViews(context.getPackageName(), R.layout.item);
         Boolean noMoreView = false;
+
+
+
+
         if(data.get(position).eventTimeEnd == null && data.get(position).eventTimeStart == null && data.get(position).eventDuration == null && data.get(position).description != null) {
+
             noMoreView = true;
         }
+
         if(noMoreView){
+
             rView.setViewVisibility(R.id.noMoreActivity, View.VISIBLE);
             rView.setTextViewText(R.id.noMoreActivity, data.get(position).description);
             rView.setViewVisibility(R.id.sheduleElementContainer, View.INVISIBLE);
             rView.setViewVisibility(R.id.sheduleElementContent, View.INVISIBLE);
         } else {
+
             rView.setViewVisibility(R.id.sheduleElementContainer, View.VISIBLE);
             rView.setViewVisibility(R.id.sheduleElementContent, View.VISIBLE);
             rView.setViewVisibility(R.id.noMoreActivity, View.INVISIBLE);
@@ -234,6 +229,7 @@ public class WidgetFactory implements RemoteViewsFactory {
             rView.setTextViewText(R.id.duration, data.get(position).eventTimeStart+"–"+data.get(position).eventTimeEnd);
             rView.setTextColor(R.id.duration, Color.parseColor(  data.get(position).hexDivider));
         }
+
 
         return rView;
     }
@@ -250,28 +246,33 @@ public class WidgetFactory implements RemoteViewsFactory {
 
     @Override
     public void onDataSetChanged() {
+
         data.clear();
         colorList.clear();
 
-        SharedPreferences sharedPref = context.getSharedPreferences("TELEOPTI_storage", Context.MODE_PRIVATE);
-        String json = sharedPref.getString("teleoptiData", null);
 
-        Gson g = new Gson();
-        Data newData = g.fromJson(json, Data.class);
+        Data newData = new AsyncToSync().syncCallToAsyncMethod(context);
+
         updateDate = newData.updateDate;
         hasTeleopti = newData.hasTeleopti;
 
         List<WidgetDayInfo> days = newData.json;
 
         WidgetDayInfo currentDay = Helper.getCurrentDay(days);
+
+
         if(currentDay != null){
+
             List<DataObject> currentShedule = new ArrayList<>();
-            if(currentDay.secondDayShedule != null){
+            if(currentDay.secondDayShedule != null && currentDay.secondDayShedule.size() > 0){
+
                 currentShedule = Helper.getCurrentShedule(currentDay.secondDayShedule, currentDay.twoDaysWorkDay, currentDay.conflictEventIndex);
             } else{
+
                 currentShedule = Helper.getCurrentShedule(currentDay.shedule, currentDay.twoDaysWorkDay, currentDay.conflictEventIndex);
             }
 
+            
             data = currentShedule;
             if(data.size() < 4){
                 DataObject noMoreActivity = new DataObject("Сегодня событий больше нет");
