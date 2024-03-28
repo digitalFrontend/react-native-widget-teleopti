@@ -199,7 +199,13 @@ public class WidgetFactory implements RemoteViewsFactory {
         RemoteViews rView = new RemoteViews(context.getPackageName(), R.layout.item);
         Boolean noMoreView = false;
 
+        if (data.size() <= position){
+            rView.setViewVisibility(R.id.sheduleElementContainer, View.INVISIBLE);
+            rView.setViewVisibility(R.id.sheduleElementContent, View.INVISIBLE);
+            rView.setViewVisibility(R.id.noMoreActivity, View.INVISIBLE);
 
+            return rView;
+        }
 
 
         if(data.get(position).eventTimeEnd == null && data.get(position).eventTimeStart == null && data.get(position).eventDuration == null && data.get(position).description != null) {
